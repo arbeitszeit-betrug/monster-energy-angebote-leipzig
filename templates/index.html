@@ -60,40 +60,91 @@
 
   .can {
     position: absolute;
-    width: 40px;
-    height: 112px;
-    border-radius: 16px / 20px;
-    box-shadow: 0 10px 26px #00000066, inset -5px 0 9px #00000022, inset 5px 0 7px #ffffff55;
-    opacity: .85;
+    width: 46px;
+    height: 132px;
+    opacity: .95;
     animation: drift 10s ease-in-out infinite;
-    filter: blur(.2px);
+    filter: drop-shadow(0 16px 20px rgba(0,0,0,.55));
   }
-  .can::before {
-    content: "";
+
+  /* clipped cylinder shell: shading + label + shine + drops all live inside this */
+  .can-body {
     position: absolute;
-    top: -5px; left: 5px; right: 5px; height: 11px;
+    inset: 0;
+    border-radius: 19px / 24px;
+    overflow: hidden;
+    box-shadow:
+      inset -9px 0 16px rgba(0,0,0,.4),
+      inset 7px 0 10px rgba(255,255,255,.55),
+      inset 0 -16px 20px rgba(0,0,0,.4),
+      inset 0 10px 10px rgba(255,255,255,.25);
+  }
+  .can--white .can-body {
+    background: linear-gradient(90deg, #a3a3a3 0%, #e6e6e6 14%, #ffffff 32%, #f2f2f2 48%, #d8d8d8 66%, #b4b4b4 84%, #969696 100%);
+  }
+  .can--orange .can-body {
+    background: linear-gradient(90deg, #a8420a 0%, #f0791c 16%, #ffb15b 34%, #ff9438 50%, #ff7d10 68%, #c9530a 86%, #a04106 100%);
+  }
+
+  /* rim (lid) + pull tab */
+  .can-rim {
+    position: absolute;
+    top: -2px; left: 3px; right: 3px; height: 15px;
     border-radius: 50%;
-    background: linear-gradient(180deg, #f4f4f4, #b7b7b7);
+    background: radial-gradient(ellipse at 50% 25%, #ffffff, #d6d6d6 55%, #9a9a9a 100%);
+    box-shadow: 0 2px 3px rgba(0,0,0,.35);
   }
-  .can::after {
+  .can-rim::after {
     content: "";
     position: absolute;
-    top: 36%; left: 0; right: 0; height: 30%;
-    opacity: .92;
+    top: 3px; left: 50%; width: 11px; height: 5px;
+    margin-left: -5.5px;
+    border: 1.3px solid #8d8d8d;
+    border-radius: 3px;
+    background: #dcdcdc;
   }
 
-  .can--white {
-    background: linear-gradient(90deg, #cfcfcf 0%, #fdfdfd 18%, #ffffff 38%, #dddddd 58%, #c3c3c3 80%, #aeaeae 100%);
-  }
-  .can--white::after {
-    background: repeating-linear-gradient(112deg, var(--accent-monster) 0 5px, #0c0c0c 5px 10px);
+  /* glossy vertical highlight */
+  .can-shine {
+    position: absolute;
+    top: 16px; bottom: 18px; left: 15%;
+    width: 20%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,.85) 28%, rgba(255,255,255,.2) 62%, transparent);
+    filter: blur(1.4px);
   }
 
-  .can--orange {
-    background: linear-gradient(90deg, #ffb06b 0%, #ff9438 30%, #ff7d10 55%, #e8650a 80%, #c9530a 100%);
+  /* label band with stylised diagonal "claw" stripes */
+  .can-label {
+    position: absolute;
+    left: 0; right: 0; top: 42%; height: 30%;
+    display: flex;
+    overflow: hidden;
   }
-  .can--orange::after {
-    background: repeating-radial-gradient(circle at 30% 35%, #fff5 0 3px, transparent 4px 11px);
+  .can--white .can-label { background: #0b0b0b; }
+  .can--orange .can-label { background: radial-gradient(ellipse at 50% 40%, #ffdca8, transparent 72%), #7a1d02; }
+
+  .claw {
+    flex: 1 0 40%;
+    margin-left: -14%;
+    transform: skewX(-16deg);
+  }
+  .can--white .claw:nth-child(1) { background: var(--accent-monster); }
+  .can--white .claw:nth-child(2) { background: #0b0b0b; }
+  .can--white .claw:nth-child(3) { background: var(--accent-monster); }
+  .can--orange .claw { display: none; }
+
+  /* condensation droplets */
+  .can-drops {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 24% 22%, rgba(255,255,255,.7) 0 2px, transparent 3px),
+      radial-gradient(circle at 68% 16%, rgba(255,255,255,.5) 0 1.4px, transparent 2.4px),
+      radial-gradient(circle at 42% 78%, rgba(255,255,255,.55) 0 1.8px, transparent 3px),
+      radial-gradient(circle at 78% 84%, rgba(255,255,255,.45) 0 1.3px, transparent 2.3px),
+      radial-gradient(circle at 22% 60%, rgba(255,255,255,.4) 0 1.1px, transparent 2px),
+      radial-gradient(circle at 60% 58%, rgba(255,255,255,.35) 0 1.1px, transparent 2px);
   }
 
   .can:nth-of-type(1){ left: 3%;  top: 18%;  transform: rotate(-8deg);  animation-duration: 9s; }
@@ -229,12 +280,16 @@
 
   <header class="hero">
     <div class="can-field" aria-hidden="true">
-      <span class="can can--white"></span>
-      <span class="can can--orange"></span>
-      <span class="can can--white"></span>
-      <span class="can can--white"></span>
-      <span class="can can--orange"></span>
-      <span class="can can--white"></span>
+      {% for kind in ["white", "orange", "white", "white", "orange", "white"] %}
+      <span class="can can--{{ kind }}">
+        <span class="can-body">
+          <span class="can-rim"></span>
+          <span class="can-shine"></span>
+          <span class="can-label"><span class="claw"></span><span class="claw"></span><span class="claw"></span></span>
+          <span class="can-drops"></span>
+        </span>
+      </span>
+      {% endfor %}
     </div>
 
     <h1>Getränke-Angebote <span class="accent">Leipzig</span></h1>
