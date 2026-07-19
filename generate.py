@@ -3,7 +3,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-from scraper import fetch_all
+from scraper import fetch_all, week_progress
 
 BASE_DIR = Path(__file__).parent
 OUT_DIR = BASE_DIR / "docs"
@@ -18,6 +18,7 @@ def main():
         tabs=tabs,
         week_start=week_start.strftime("%d.%m.%Y"),
         week_end=week_end.strftime("%d.%m.%Y"),
+        week_pct=week_progress(),
         updated=datetime.datetime.now().strftime("%d.%m.%Y %H:%M"),
     )
 

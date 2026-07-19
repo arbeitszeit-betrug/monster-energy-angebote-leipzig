@@ -2,7 +2,7 @@ import datetime
 
 from flask import Flask, render_template
 
-from scraper import fetch_all
+from scraper import fetch_all, week_progress
 
 app = Flask(__name__)
 
@@ -30,6 +30,7 @@ def index():
         tabs=tabs,
         week_start=week_start.strftime("%d.%m.%Y"),
         week_end=week_end.strftime("%d.%m.%Y"),
+        week_pct=week_progress(),
         updated=_cache["fetched_at"].strftime("%d.%m.%Y %H:%M"),
     )
 

@@ -35,14 +35,6 @@ jobs:
         with:
           path: docs
 
-      - name: Commit generated site (history)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html
-          git diff --quiet --cached || git commit -m "Angebote aktualisiert"
-          git push
-
   deploy:
     needs: build
     runs-on: ubuntu-latest

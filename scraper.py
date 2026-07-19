@@ -24,6 +24,7 @@ PRODUCTS = [
 # (z.B. "MIT LIDL PLUS APP", "Kaufland App"), sind App-exklusiv und fliegen raus.
 APP_ONLY_RE = re.compile(r"\bAPP\b", re.IGNORECASE)
 DATE_RE = re.compile(r"(\d{2})\.(\d{2})\.\s*-\s*(\d{2})\.(\d{2})\.")
+PRICE_VAL_RE = re.compile(r"(\d+[.,]\d+)")
 
 
 def _parse_dates(text, today):
@@ -82,13 +83,18 @@ def fetch_offers(slug, city=CITY, today=None):
         address_el = li.select_one("dd.retailer-address address")
         product_el = li.select_one("div.header h3")
 
+        price_text = price_el.get_text(strip=True) if price_el else "?"
+        price_m = PRICE_VAL_RE.search(price_text)
         entry = {
             "product": product_el.get_text(strip=True) if product_el else "",
-            "price": price_el.get_text(strip=True) if price_el else "?",
+            "price": price_text,
+            "price_value": float(price_m.group(1).replace(",", ".")) if price_m else 999.0,
             "retailer": retailer_el.get_text(strip=True) if retailer_el else "Unbekannt",
             "address": address_el.get_text(strip=True) if address_el else "",
             "valid_from": start.strftime("%d.%m."),
             "valid_to": end.strftime("%d.%m."),
+            "days_left": (end - today).days,
+            "starts_in": (start - today).days,
             "info": info_text,
         }
 
@@ -103,10 +109,16 @@ def fetch_offers(slug, city=CITY, today=None):
     return offers, next_offer
 
 
+def week_progress(today=None):
+    today = today or datetime.date.today()
+    return round((today.weekday() + 1) / 7 * 100)
+
+
 def fetch_all(products=PRODUCTS, city=CITY, today=None):
     today = today or datetime.date.today()
     tabs = []
     for p in products:
         offers, next_offer = fetch_offers(p["slug"], city, today)
-        tabs.append({**p, "offers": offers, "next_offer": next_offer})
+        min_price = min((o["price_value"] for o in offers), default=None)
+        tabs.append({**p, "offers": offers, "next_offer": next_offer, "min_price": min_price})
     return tabs, week_range(today)
