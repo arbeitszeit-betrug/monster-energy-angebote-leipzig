@@ -30,6 +30,13 @@ jobs:
       - name: Generate site
         run: python generate.py
 
+      - name: Preisverlauf speichern
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/history.json
+          git diff --quiet --cached || (git commit -m "Preisverlauf aktualisiert" && git push)
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

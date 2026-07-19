@@ -2,6 +2,7 @@ import datetime
 
 from flask import Flask, render_template
 
+from generate import build_history
 from scraper import fetch_all, week_progress
 
 app = Flask(__name__)
@@ -17,7 +18,9 @@ def get_data():
         or _cache["fetched_at"] is None
         or now - _cache["fetched_at"] > datetime.timedelta(minutes=CACHE_MINUTES)
     ):
-        _cache["data"] = fetch_all()
+        tabs, weeks = fetch_all()
+        build_history(tabs, persist=False)
+        _cache["data"] = (tabs, weeks)
         _cache["fetched_at"] = now
     return _cache["data"]
 

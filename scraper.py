@@ -14,10 +14,11 @@ HEADERS = {
 
 CITY = "leipzig"
 PRODUCTS = [
-    {"id": "monster", "label": "Monster Energy", "slug": "monster-energy", "theme": "white"},
+    {"id": "monster", "label": "Monster Energy", "slug": "monster-energy"},
     # marktguru hat keine generische "Spezi"-Markenseite; Schwip Schwap ist die
     # gaengigste im Supermarkt gefuehrte Spezi-Marke und hat eine Leipzig-Seite.
-    {"id": "spezi", "label": "Spezi", "slug": "schwip-schwap", "theme": "orange"},
+    {"id": "spezi", "label": "Spezi", "slug": "schwip-schwap"},
+    {"id": "redbull", "label": "Red Bull", "slug": "red-bull"},
 ]
 
 # Angebote, deren Beschreibungstext ein eigenstaendiges Wort "APP" enthaelt
