@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monster Energy Angebote - Leipzig</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: #fafafa;
+      color: #1a1a1a;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #16181c; color: #e6e6e6; }
+      .card { background: #22252b !important; border-color: #333 !important; }
+      .muted { color: #999 !important; }
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 0.1rem; }
+    .subtitle { color: #666; margin-bottom: 1.5rem; }
+    .muted { color: #777; font-size: 0.85rem; }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e2e2;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .retailer { font-weight: 600; font-size: 1.05rem; }
+    .address { font-size: 0.85rem; color: #777; }
+    .valid { font-size: 0.85rem; color: #777; }
+    .price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1a7a1a;
+      white-space: nowrap;
+    }
+    .empty {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: #777;
+      border: 1px dashed #ccc;
+      border-radius: 10px;
+    }
+    a.refresh { font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Monster Energy Angebote &ndash; Leipzig</h1>
+  <div class="subtitle">Woche vom {{ week_start }} bis {{ week_end }} &middot; nur reguläre Rabatte, keine App-Angebote</div>
+
+  {% if offers %}
+    {% for o in offers %}
+    <div class="card">
+      <div>
+        <div class="retailer">{{ o.retailer }}</div>
+        <div class="address">{{ o.address }}</div>
+        <div class="valid">gültig {{ o.valid_from }} &ndash; {{ o.valid_to }}</div>
+      </div>
+      <div class="price">{{ o.price }}</div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty">
+      Diese Woche kein regulärer Monster-Energy-Rabatt in Leipzig gefunden.
+      {% if next_offer %}
+        <br /><br />
+        Nächstes bekanntes Angebot: <strong>{{ next_offer.retailer }}</strong>,
+        {{ next_offer.price }}, gültig {{ next_offer.valid_from }}&ndash;{{ next_offer.valid_to }}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <p class="muted">Quelle: marktguru.de &middot; zuletzt aktualisiert {{ updated }} (t&auml;glich automatisch)</p>
+</body>
+</html>
