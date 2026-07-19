@@ -111,11 +111,11 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
   }
 
-  /* ===== floating drinks across the whole page ===== */
+  /* ===== floating drinks, in front of the content and draggable ===== */
   .drink-layer {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: 5;
     pointer-events: none;
   }
 
@@ -125,9 +125,14 @@
     animation: drift 10s ease-in-out infinite;
     filter: drop-shadow(0 16px 20px rgba(0,0,0,.55));
     pointer-events: auto;
-    cursor: pointer;
+    cursor: grab;
     user-select: none;
+    touch-action: none;
     -webkit-tap-highlight-color: transparent;
+  }
+  .fl.dragging {
+    cursor: grabbing;
+    animation-play-state: paused;
   }
 
   /* slots 1-10: monster cans */
@@ -182,9 +187,10 @@
     pointer-events: none;
   }
 
+  /* --tx/--ty carry the drag offset so drifting and launching start from the dropped spot */
   @keyframes drift {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50%      { transform: translateY(-24px) rotate(5deg); }
+    0%, 100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(-5deg); }
+    50%      { transform: translate(var(--tx, 0px), calc(var(--ty, 0px) - 24px)) rotate(5deg); }
   }
   @media (prefers-reduced-motion: reduce) {
     .fl, .blob, .bubbles span, .hero h1 .accent { animation: none !important; }
@@ -418,11 +424,11 @@
 
   /* rocket launch after 5 charges */
   @keyframes launch {
-    0%   { transform: translateY(0) rotate(0); }
-    42%  { transform: translateY(-110vh) rotate(520deg); }
-    62%  { transform: translateY(-110vh) rotate(700deg); }
-    88%  { transform: translateY(10px) rotate(720deg); }
-    100% { transform: translateY(0) rotate(720deg); }
+    0%   { transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(0); }
+    42%  { transform: translate(var(--tx, 0px), calc(var(--ty, 0px) - 110vh)) rotate(520deg); }
+    62%  { transform: translate(var(--tx, 0px), calc(var(--ty, 0px) - 110vh)) rotate(700deg); }
+    88%  { transform: translate(var(--tx, 0px), calc(var(--ty, 0px) + 10px)) rotate(720deg); }
+    100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(720deg); }
   }
   .fl.launching { animation: launch 2.1s cubic-bezier(.45,0,.55,1) forwards; }
 
@@ -1286,18 +1292,53 @@
     setTimeout(function () { el.classList.remove("opened"); }, 3500);
   }
 
-  /* Monster & Red Bull cans: body clicks charge, 5th click = lightning + rocket */
+  /* drag to move; a short tap (under 8px movement) still triggers the toy action */
+  function draggable(el, onTap) {
+    el.addEventListener("pointerdown", function (e) {
+      var pid = e.pointerId;
+      var sx = e.clientX, sy = e.clientY;
+      var bx = parseFloat(el.dataset.tx || 0), by = parseFloat(el.dataset.ty || 0);
+      var dragged = false;
+      try { el.setPointerCapture(pid); } catch (err) {}
+
+      function move(ev) {
+        if (ev.pointerId !== pid) return;
+        var dx = ev.clientX - sx, dy = ev.clientY - sy;
+        if (!dragged && dx * dx + dy * dy > 64) {
+          dragged = true;
+          el.classList.add("dragging");
+        }
+        if (dragged) {
+          el.dataset.tx = bx + dx;
+          el.dataset.ty = by + dy;
+          el.style.setProperty("--tx", (bx + dx) + "px");
+          el.style.setProperty("--ty", (by + dy) + "px");
+        }
+      }
+      function up(ev) {
+        if (ev.pointerId !== pid) return;
+        el.removeEventListener("pointermove", move);
+        el.removeEventListener("pointerup", up);
+        el.removeEventListener("pointercancel", up);
+        el.classList.remove("dragging");
+        if (!dragged) onTap(e);
+      }
+      el.addEventListener("pointermove", move);
+      el.addEventListener("pointerup", up);
+      el.addEventListener("pointercancel", up);
+    });
+  }
+
+  /* Monster & Red Bull cans: tap the lid to open, tap the body to charge, drag to move */
   document.querySelectorAll(".fl.can").forEach(function (el) {
     var body = el.querySelector(".can-body");
-    var rim = el.querySelector(".can-rim");
     var charge = 0;
 
-    rim.addEventListener("pointerdown", function (e) {
-      e.stopPropagation();
-      openCan(el, body);
-    });
-
-    el.addEventListener("pointerdown", function () {
+    draggable(el, function (e) {
+      if (e.target.closest(".can-rim")) {
+        openCan(el, body);
+        return;
+      }
       if (el.classList.contains("launching")) return;
       charge++;
       el.style.setProperty("--charge", charge);
@@ -1331,7 +1372,7 @@
     var inner = el.querySelector(".b-inner");
     var taps = 0;
     var busy = false;
-    el.addEventListener("pointerdown", function () {
+    draggable(el, function () {
       if (busy) return;
       taps++;
       jolt(inner);
