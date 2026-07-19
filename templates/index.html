@@ -14,8 +14,8 @@
     --card-border: #ffffff17;
     --accent-monster: #7CFC3A;
     --accent-monster-dim: #4c9c22;
-    --accent-spezi: #FF8A2B;
-    --accent-spezi-dim: #b85e17;
+    --accent-spezi: #ff4fa0;
+    --accent-spezi-dim: #a63472;
     --accent: var(--accent-monster);
     --accent-dim: var(--accent-monster-dim);
   }
@@ -120,17 +120,42 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .fl:nth-of-type(1){ left: 2%;   top: 6%;  width: 46px; height: 132px; animation-duration: 9s; }
-  .fl:nth-of-type(2){ left: 5%;   top: 38%; width: 40px; height: 158px; font-size: 8px; animation-duration: 12s; animation-delay: -3s; }
-  .fl:nth-of-type(3){ left: 3%;   top: 70%; width: 44px; height: 126px; font-size: 8px; animation-duration: 10s; animation-delay: -7s; }
-  .fl:nth-of-type(4){ right: 3%;  top: 7%;  width: 48px; height: 138px; font-size: 10px; animation-duration: 8.5s; animation-delay: -1s; }
-  .fl:nth-of-type(5){ right: 5%;  top: 40%; width: 36px; height: 144px; font-size: 8px; animation-duration: 11s; animation-delay: -5s; }
-  .fl:nth-of-type(6){ right: 2%;  top: 71%; width: 46px; height: 132px; animation-duration: 9.5s; animation-delay: -6s; }
-  .fl:nth-of-type(7){ left: 13%;  top: 13%; width: 36px; height: 102px; font-size: 7px; animation-duration: 10.5s; animation-delay: -2s; }
-  .fl:nth-of-type(8){ right: 12%; top: 14%; width: 34px; height: 96px;  font-size: 7px; animation-duration: 11.5s; animation-delay: -4s; }
+  /* slots 1-10: monster cans */
+  .fl:nth-of-type(1) { left: 2%;   top: 5%;  width: 46px; height: 132px; animation-duration: 9s; }
+  .fl:nth-of-type(2) { left: 6%;   top: 30%; width: 40px; height: 114px; font-size: 8px;  animation-duration: 12s;   animation-delay: -3s; }
+  .fl:nth-of-type(3) { left: 3%;   top: 55%; width: 50px; height: 142px; font-size: 10px; animation-duration: 10s;   animation-delay: -7s; }
+  .fl:nth-of-type(4) { left: 8%;   top: 79%; width: 38px; height: 108px; font-size: 8px;  animation-duration: 11.5s; animation-delay: -9s; }
+  .fl:nth-of-type(5) { right: 3%;  top: 6%;  width: 48px; height: 138px; font-size: 10px; animation-duration: 8.5s;  animation-delay: -1s; }
+  .fl:nth-of-type(6) { right: 7%;  top: 28%; width: 36px; height: 102px; font-size: 7px;  animation-duration: 11s;   animation-delay: -5s; }
+  .fl:nth-of-type(7) { right: 2%;  top: 52%; width: 46px; height: 132px; animation-duration: 9.5s;  animation-delay: -6s; }
+  .fl:nth-of-type(8) { right: 8%;  top: 77%; width: 42px; height: 120px; font-size: 8px;  animation-duration: 10.5s; animation-delay: -8s; }
+  .fl:nth-of-type(9) { left: 13%;  top: 13%; width: 36px; height: 102px; font-size: 7px;  animation-duration: 10.5s; animation-delay: -2s; }
+  .fl:nth-of-type(10){ right: 12%; top: 14%; width: 34px; height: 96px;  font-size: 7px;  animation-duration: 11.5s; animation-delay: -4s; }
+
+  /* slots 11-18: spezi bottles */
+  .fl:nth-of-type(11){ left: 2%;   top: 5%;  width: 44px; height: 150px; animation-duration: 9s; }
+  .fl:nth-of-type(12){ left: 6%;   top: 31%; width: 38px; height: 132px; font-size: 8px; animation-duration: 12s;   animation-delay: -3s; }
+  .fl:nth-of-type(13){ left: 3%;   top: 57%; width: 46px; height: 158px; animation-duration: 10s;   animation-delay: -7s; }
+  .fl:nth-of-type(14){ left: 9%;   top: 81%; width: 36px; height: 124px; font-size: 7px; animation-duration: 11.5s; animation-delay: -9s; }
+  .fl:nth-of-type(15){ right: 3%;  top: 6%;  width: 44px; height: 150px; animation-duration: 8.5s;  animation-delay: -1s; }
+  .fl:nth-of-type(16){ right: 7%;  top: 30%; width: 36px; height: 126px; font-size: 8px; animation-duration: 11s;   animation-delay: -5s; }
+  .fl:nth-of-type(17){ right: 2%;  top: 55%; width: 46px; height: 158px; animation-duration: 9.5s;  animation-delay: -6s; }
+  .fl:nth-of-type(18){ right: 11%; top: 14%; width: 34px; height: 116px; font-size: 7px; animation-duration: 11.5s; animation-delay: -4s; }
 
   @media (max-width: 900px) {
-    .fl:nth-of-type(2), .fl:nth-of-type(3), .fl:nth-of-type(5), .fl:nth-of-type(6) { display: none; }
+    .fl:nth-of-type(2), .fl:nth-of-type(3), .fl:nth-of-type(4),
+    .fl:nth-of-type(6), .fl:nth-of-type(7), .fl:nth-of-type(8),
+    .fl:nth-of-type(12), .fl:nth-of-type(13), .fl:nth-of-type(14),
+    .fl:nth-of-type(16), .fl:nth-of-type(17) { display: none; }
+  }
+
+  /* only the drinks of the active tab are visible */
+  .fl { transition: opacity .5s ease, visibility .5s; }
+  .app:has(#tab-monster:checked) .fl.bottle,
+  .app:has(#tab-spezi:checked) .fl.can {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   @keyframes drift {
@@ -334,12 +359,12 @@
     100% { transform: translate(var(--bx), var(--by)) scale(1.5); opacity: 0; }
   }
 
-  /* ===== Spezi longneck bottle (real shape, brown glass all the way) ===== */
+  /* ===== Paulaner-style Spezi bottle: wider neck, big yellow→pink label ===== */
   .b-inner { position: absolute; inset: 0; }
 
   .b-cap {
     position: absolute;
-    top: 0; left: 36%; width: 28%; height: 5.5%;
+    top: 0; left: 33%; width: 34%; height: 5%;
     background: radial-gradient(circle at 50% 30%, #f7d35c, #d99a12 75%);
     border-radius: 3px 3px 2px 2px;
     box-shadow: 0 1.5px 2px rgba(0,0,0,.55), inset 0 1.5px 1.5px rgba(255,255,255,.6), inset 0 -1px 1px rgba(0,0,0,.3);
@@ -348,36 +373,37 @@
   }
   .spraying .b-cap { transform: translate(9px,-34px) rotate(75deg); opacity: 0; }
 
-  /* one clipped silhouette: neck, shoulder and body share the same glass */
+  /* one clipped silhouette: wide neck flowing into the body, same glass all over */
   .b-glass {
     position: absolute;
-    inset: 4.5% 0 0 0;
+    inset: 4% 0 0 0;
     clip-path: polygon(
-      41% 0%, 59% 0%,
-      59% 3%, 60% 15%,
-      66% 21%, 78% 26%, 90% 31%, 96% 38%,
-      96% 95%, 93% 99%, 86% 100%,
-      14% 100%, 7% 99%, 4% 95%,
-      4% 38%, 10% 31%, 22% 26%, 34% 21%, 40% 15%, 41% 3%
+      36% 0%, 64% 0%,
+      65% 5%, 67% 12%,
+      70% 18%, 76% 24%, 85% 29%, 93% 34%, 97% 41%,
+      97% 94%, 94% 99%, 86% 100%,
+      14% 100%, 6% 99%, 3% 94%,
+      3% 41%, 7% 34%, 15% 29%, 24% 24%, 30% 18%, 33% 12%, 35% 5%
     );
-    background: linear-gradient(90deg, #2e1a03 0%, #5a3208 14%, #8a5210 34%, #6b3d0a 52%, #4a2a06 72%, #241402 100%);
+    background: linear-gradient(90deg, #241102 0%, #4a2506 14%, #713c0a 34%, #57300a 52%, #3a1f05 72%, #1c0d02 100%);
   }
 
+  /* dark cola-mix liquid, reaches up into the neck */
   .liquid {
     position: absolute;
     left: 0; right: 0; bottom: 0;
-    height: 91%;
-    background: linear-gradient(90deg, #6b3d0a 0%, #b06f18 26%, #d98d26 44%, #a05a10 64%, #7a4a0e 86%, #5a3208 100%);
+    height: 93%;
+    background: linear-gradient(90deg, #3a1c04 0%, #7a4210 26%, #a55d1a 44%, #6b3a0c 64%, #4a2807 86%, #2e1804 100%);
     transition: height 3s ease;
   }
   .spraying .liquid { height: 4%; transition: height 1.3s ease-in; }
 
   .b-shine {
     position: absolute;
-    top: 2%; bottom: 6%; left: 16%;
+    top: 1%; bottom: 6%; left: 15%;
     width: 13%;
     border-radius: 50%;
-    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.75) 22%, rgba(255,255,255,.12) 60%, transparent);
+    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.7) 22%, rgba(255,255,255,.12) 60%, transparent);
     filter: blur(1.1px);
   }
   .b-shine2 {
@@ -385,45 +411,67 @@
     top: 30%; bottom: 8%; right: 12%;
     width: 7%;
     border-radius: 50%;
-    background: linear-gradient(180deg, transparent, rgba(255,255,255,.28) 45%, transparent);
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,.25) 45%, transparent);
     filter: blur(1px);
   }
 
+  /* small red band on the neck like the Paulaner neck label */
+  .b-neckband {
+    position: absolute;
+    left: 0; right: 0; top: 9%; height: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #c22027, #8f1418);
+    color: #ffd9a0;
+    font-size: .32em;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* big label: yellow fading into pink/purple with bubbles, like Paulaner Spezi */
   .b-label {
     position: absolute;
-    left: 0; right: 0; top: 47%; height: 25%;
+    left: 0; right: 0; top: 40%; height: 48%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1px;
-    background: linear-gradient(180deg, #ffd23f 0%, #ffb02e 68%, #ff9026 100%);
+    gap: 2px;
+    background: linear-gradient(180deg, #ffd63e 0%, #ffb32e 28%, #ff7a3e 52%, #f0439a 78%, #8f2f9e 100%);
     box-shadow: 0 1px 2px rgba(0,0,0,.35), 0 -1px 1px rgba(0,0,0,.2);
-  }
-  .b-label b {
-    font-style: italic;
-    font-weight: 900;
-    font-size: 1em;
-    line-height: 1;
-    letter-spacing: .4px;
-    color: #d31f26;
-    text-shadow: 0 1px 0 rgba(255,255,255,.65);
-  }
-  .b-label i {
-    font-style: normal;
-    font-weight: 700;
-    font-size: .42em;
-    line-height: 1;
-    letter-spacing: 1.6px;
-    color: #8a3d00;
+    overflow: hidden;
   }
   .b-label::after {
     content: "";
     position: absolute;
-    left: 0; right: 0; bottom: 6%;
-    height: 8%;
-    background: repeating-linear-gradient(100deg, #2765c0 0 4px, transparent 4px 8px);
-    opacity: .8;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 22% 78%, rgba(255,255,255,.5) 0 2px, transparent 3px),
+      radial-gradient(circle at 70% 85%, rgba(255,255,255,.4) 0 2.6px, transparent 3.8px),
+      radial-gradient(circle at 46% 90%, rgba(255,182,240,.65) 0 1.8px, transparent 2.8px),
+      radial-gradient(circle at 84% 70%, rgba(255,255,255,.35) 0 1.4px, transparent 2.4px),
+      radial-gradient(circle at 12% 62%, rgba(255,182,240,.5) 0 1.5px, transparent 2.5px);
+  }
+  .b-label i {
+    font-style: normal;
+    font-weight: 800;
+    font-size: .4em;
+    line-height: 1;
+    letter-spacing: 1.2px;
+    color: #1a2a6b;
+  }
+  .b-label b {
+    font-family: "Segoe Script", "Brush Script MT", cursive;
+    font-weight: 700;
+    font-size: 1.2em;
+    line-height: 1;
+    color: #e01f2d;
+    transform: rotate(-5deg);
+    text-shadow:
+      -1px 0 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, 0 1px 0 #fff,
+      0 2px 3px rgba(0,0,0,.25);
+    z-index: 1;
   }
 
   .drop {
@@ -667,6 +715,13 @@
     --accent: var(--accent-spezi);
     --accent-dim: var(--accent-spezi-dim);
   }
+
+  /* active Spezi tab gets the Paulaner label gradient */
+  #tab-spezi:checked ~ .hero .tab-btn--spezi {
+    background: linear-gradient(135deg, #ffd63e, #ff8a3e 45%, #f0439a);
+    color: #3a1030;
+    box-shadow: 0 0 20px #b8407f;
+  }
 </style>
 </head>
 <body>
@@ -684,21 +739,7 @@
   <div class="noise" aria-hidden="true"></div>
 
   <div class="drink-layer" aria-hidden="true">
-    {% for kind in ["ultra", "bottle", "fiesta", "gold", "bottle", "ultra", "gold", "fiesta"] %}
-    {% if kind == "bottle" %}
-    <span class="fl bottle" title="Erst schütteln …">
-      <span class="b-inner">
-        <span class="b-cap"></span>
-        <span class="b-glass">
-          <span class="liquid"></span>
-          <span class="b-shine"></span>
-          <span class="b-shine2"></span>
-          <span class="b-label"><b>SPEZI</b><i>LIMONADE</i></span>
-          <span class="can-drops"></span>
-        </span>
-      </span>
-    </span>
-    {% else %}
+    {% for kind in ["ultra", "fiesta", "gold", "ultra", "gold", "fiesta", "ultra", "gold", "fiesta", "ultra"] %}
     <span class="fl can can--{{ kind }}" title="Psst … klick mich öfter">
       <span class="can-body">
         <span class="can-texture"></span>
@@ -712,7 +753,21 @@
         <span class="can-drops"></span>
       </span>
     </span>
-    {% endif %}
+    {% endfor %}
+    {% for _ in range(8) %}
+    <span class="fl bottle" title="Erst schütteln …">
+      <span class="b-inner">
+        <span class="b-cap"></span>
+        <span class="b-glass">
+          <span class="liquid"></span>
+          <span class="b-shine"></span>
+          <span class="b-shine2"></span>
+          <span class="b-neckband">PAULANER</span>
+          <span class="b-label"><i>PAULANER</i><b>Spezi</b></span>
+          <span class="can-drops"></span>
+        </span>
+      </span>
+    </span>
     {% endfor %}
   </div>
 
@@ -863,7 +918,7 @@
   });
 
   /* confetti burst when switching tabs */
-  var colors = ["#7CFC3A", "#FF8A2B", "#ffffff"];
+  var colors = ["#7CFC3A", "#ffd63e", "#f0439a", "#ffffff"];
   document.querySelectorAll(".tab-input").forEach(function (inp) {
     inp.addEventListener("change", function () {
       if (reduce) return;
@@ -872,7 +927,7 @@
         particle(bar, "confetti", {
           "--bx": (Math.random() * 200 - 100) + "px",
           "--by": (Math.random() * -100 - 20) + "px",
-          "--c": colors[i % 3]
+          "--c": colors[i % 4]
         }, 950);
       }
     });
