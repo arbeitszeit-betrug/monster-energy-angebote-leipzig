@@ -141,6 +141,7 @@
   .fl:nth-of-type(16){ right: 7%;  top: 30%; width: 36px; height: 126px; font-size: 8px; animation-duration: 11s;   animation-delay: -5s; }
   .fl:nth-of-type(17){ right: 2%;  top: 55%; width: 46px; height: 158px; animation-duration: 9.5s;  animation-delay: -6s; }
   .fl:nth-of-type(18){ right: 11%; top: 14%; width: 34px; height: 116px; font-size: 7px; animation-duration: 11.5s; animation-delay: -4s; }
+  .fl:nth-of-type(19){ right: 8%;  top: 79%; width: 42px; height: 146px; font-size: 8px; animation-duration: 10.5s; animation-delay: -8s; }
 
   @media (max-width: 900px) {
     .fl:nth-of-type(2), .fl:nth-of-type(3), .fl:nth-of-type(4),
@@ -177,13 +178,33 @@
   /* ===== Monster-style can (3 variants) ===== */
   .can {
     --charge: 0;
-    --scratch: var(--accent-monster);
-    --word: #131313;
-    --sub: var(--accent-monster-dim);
     --glow: 124,252,58;
+    --claw-a: #f0f0f0;
+    --claw-b: #8f8f8f;
+    --claw-line: rgba(25,25,25,.85);
+    --word: #131313;
+    --energy: #6ec3f0;
+    --sub: #131313;
+    --top: #2a2a2a;
   }
-  .can--fiesta { --scratch: #ff9f2b; --word: #f2f6ff; --sub: #ffd23f; --glow: 61,142,240; }
-  .can--gold   { --scratch: #fff8e1; --word: #3a2a04; --sub: #7a5205; --glow: 247,211,92; }
+  .can--fiesta {
+    --glow: 255,159,43;
+    --claw-line: rgba(8,26,24,.9);
+    --word: #0e1f1c;
+    --energy: #ffffff;
+    --sub: #ff9f2b;
+    --top: #ffd23f;
+  }
+  .can--gold {
+    --glow: 247,211,92;
+    --claw-a: #fafafa;
+    --claw-b: #bdbdbd;
+    --claw-line: rgba(74,58,6,.9);
+    --word: #3a2a04;
+    --energy: #ffffff;
+    --sub: #d21f2a;
+    --top: #5a3a06;
+  }
 
   .can-body {
     position: absolute;
@@ -200,7 +221,7 @@
     transition: box-shadow .15s ease;
   }
   .can--fiesta .can-body {
-    background: linear-gradient(90deg, #0c2f6b 0%, #1e63c8 16%, #3d8ef0 34%, #2a74d8 50%, #1c56b0 68%, #123f8a 86%, #0c2f6b 100%);
+    background: linear-gradient(90deg, #0a4a44 0%, #178074 16%, #35c2b4 34%, #23a89a 50%, #1f9c90 68%, #0e5f58 86%, #0a4a44 100%);
     box-shadow:
       inset -9px 0 16px rgba(0,0,0,.5),
       inset 7px 0 10px rgba(255,255,255,.3),
@@ -276,40 +297,87 @@
     filter: blur(1px);
   }
 
-  /* three energy scratches above the wordmark (deliberately abstract) */
-  .can-scratch {
+  /* subtle filigree doodle texture like on the real cans */
+  .can-filigree {
     position: absolute;
-    left: 50%; top: 19%;
-    width: 3px; height: 16%;
-    margin-left: -1.5px;
-    background: var(--scratch);
-    border-radius: 2px;
-    transform: skewX(-14deg);
-    box-shadow: 7px 2px 0 var(--scratch), -7px -2px 0 var(--scratch);
-    filter: drop-shadow(0 0 3px rgba(var(--glow), .8));
+    inset: 0;
+    opacity: .4;
+    mix-blend-mode: overlay;
+    background-image:
+      radial-gradient(circle at 22% 28%, transparent 5px, rgba(0,0,0,.4) 5.5px, transparent 6.2px),
+      radial-gradient(circle at 78% 20%, transparent 3.5px, rgba(0,0,0,.35) 4px, transparent 4.7px),
+      radial-gradient(circle at 70% 82%, transparent 4.5px, rgba(0,0,0,.35) 5px, transparent 5.7px),
+      radial-gradient(circle at 26% 74%, transparent 3px, rgba(0,0,0,.3) 3.5px, transparent 4.2px),
+      repeating-linear-gradient(55deg, transparent 0 7px, rgba(0,0,0,.18) 7px 7.6px, transparent 7.6px 15px);
   }
+
+  /* "ZERO ZUCKER" band at the top */
+  .can-top {
+    position: absolute;
+    top: 6%; left: 0; right: 0;
+    text-align: center;
+    font-weight: 800;
+    font-size: .34em;
+    line-height: 1;
+    letter-spacing: 1.6px;
+    color: var(--top);
+  }
+
+  /* three-drip claw, silver with dark outline like the real artwork */
+  .can-claw {
+    position: absolute;
+    left: 18%; right: 18%; top: 12%; height: 31%;
+  }
+  .can-claw span {
+    position: absolute;
+    top: 0;
+    width: 30%;
+    background: linear-gradient(180deg, var(--claw-a), var(--claw-b));
+    clip-path: polygon(
+      0% 0%, 100% 0%, 82% 14%, 96% 26%, 72% 42%, 88% 56%, 58% 100%,
+      44% 68%, 20% 76%, 34% 50%, 8% 38%, 24% 24%, 2% 10%
+    );
+    filter:
+      drop-shadow(0 0 .6px var(--claw-line))
+      drop-shadow(0 0 .6px var(--claw-line))
+      drop-shadow(0 1px 2px rgba(var(--glow), .5));
+  }
+  .can-claw span:nth-child(1) { left: 2%;  height: 80%; transform: rotate(-7deg); }
+  .can-claw span:nth-child(2) { left: 35%; height: 100%; }
+  .can-claw span:nth-child(3) { right: 2%; height: 84%; transform: rotate(7deg); }
 
   .can-word {
     position: absolute;
-    left: 0; right: 0; top: 44%;
+    left: 0; right: 0; top: 50%;
     text-align: center;
-    font-family: Impact, "Arial Black", "Segoe UI", sans-serif;
+    font-family: "Old English Text MT", "Blackadder ITC", Impact, "Arial Black", sans-serif;
     font-weight: 900;
     font-size: 1em;
     line-height: 1;
     letter-spacing: .4px;
     color: var(--word);
-    transform: skewX(-4deg) scaleY(1.15);
+    transform: scaleY(1.1);
     text-shadow: 0 1px 1px rgba(0,0,0,.15);
+  }
+  .can-energy {
+    position: absolute;
+    left: 0; right: 0; top: 63%;
+    text-align: center;
+    font-weight: 700;
+    font-size: .5em;
+    line-height: 1;
+    letter-spacing: 2.4px;
+    color: var(--energy);
+    text-shadow: 0 1px 1px rgba(0,0,0,.25);
   }
   .can-sub {
     position: absolute;
-    left: 0; right: 0; top: 58%;
+    left: 0; right: 0; top: 71%;
     text-align: center;
-    font-weight: 700;
-    font-size: .55em;
-    line-height: 1;
-    letter-spacing: 2.2px;
+    font-weight: 800;
+    font-size: .46em;
+    line-height: 1.3;
+    letter-spacing: 1px;
     color: var(--sub);
   }
 
@@ -743,18 +811,21 @@
     <span class="fl can can--{{ kind }}" title="Psst … klick mich öfter">
       <span class="can-body">
         <span class="can-texture"></span>
+        <span class="can-filigree"></span>
         <span class="can-taper"></span>
         <span class="can-rim"></span>
         <span class="can-shine"></span>
         <span class="can-shine2"></span>
-        <span class="can-scratch"></span>
+        <span class="can-top">ZERO ZUCKER</span>
+        <span class="can-claw"><span></span><span></span><span></span></span>
         <span class="can-word">MONSTER</span>
-        <span class="can-sub">{% if kind == "fiesta" %}FIESTA{% elif kind == "gold" %}PINEAPPLE{% else %}ULTRA{% endif %}</span>
+        <span class="can-energy">ENERGY</span>
+        <span class="can-sub">{% if kind == "fiesta" %}ULTRA FIESTA<br />MANGO{% elif kind == "gold" %}ULTRA GOLDEN<br />PINEAPPLE{% else %}ULTRA{% endif %}</span>
         <span class="can-drops"></span>
       </span>
     </span>
     {% endfor %}
-    {% for _ in range(8) %}
+    {% for _ in range(9) %}
     <span class="fl bottle" title="Erst schütteln …">
       <span class="b-inner">
         <span class="b-cap"></span>
