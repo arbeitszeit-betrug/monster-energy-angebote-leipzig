@@ -4,7 +4,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-URL = "https://www.marktguru.de/bl/monster-energy/leipzig"
+BASE_URL = "https://www.marktguru.de/bl/{slug}/{city}"
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -12,7 +12,15 @@ HEADERS = {
     )
 }
 
-# Angebote, deren Beschreibungstext ein eigenständiges Wort "APP" enthaelt
+CITY = "leipzig"
+PRODUCTS = [
+    {"id": "monster", "label": "Monster Energy", "slug": "monster-energy", "theme": "white"},
+    # marktguru hat keine generische "Spezi"-Markenseite; Schwip Schwap ist die
+    # gaengigste im Supermarkt gefuehrte Spezi-Marke und hat eine Leipzig-Seite.
+    {"id": "spezi", "label": "Spezi", "slug": "schwip-schwap", "theme": "orange"},
+]
+
+# Angebote, deren Beschreibungstext ein eigenstaendiges Wort "APP" enthaelt
 # (z.B. "MIT LIDL PLUS APP", "Kaufland App"), sind App-exklusiv und fliegen raus.
 APP_ONLY_RE = re.compile(r"\bAPP\b", re.IGNORECASE)
 DATE_RE = re.compile(r"(\d{2})\.(\d{2})\.\s*-\s*(\d{2})\.(\d{2})\.")
@@ -41,14 +49,15 @@ def week_range(today):
     return monday, sunday
 
 
-def fetch_offers():
-    resp = requests.get(URL, headers=HEADERS, timeout=15)
+def fetch_offers(slug, city=CITY, today=None):
+    today = today or datetime.date.today()
+    week_start, week_end = week_range(today)
+
+    url = BASE_URL.format(slug=slug, city=city)
+    resp = requests.get(url, headers=HEADERS, timeout=15)
     resp.raise_for_status()
     resp.encoding = "utf-8"
     soup = BeautifulSoup(resp.text, "html.parser")
-
-    today = datetime.date.today()
-    week_start, week_end = week_range(today)
 
     offers = []
     upcoming = []
@@ -74,7 +83,7 @@ def fetch_offers():
         product_el = li.select_one("div.header h3")
 
         entry = {
-            "product": product_el.get_text(strip=True) if product_el else "Monster Energy",
+            "product": product_el.get_text(strip=True) if product_el else "",
             "price": price_el.get_text(strip=True) if price_el else "?",
             "retailer": retailer_el.get_text(strip=True) if retailer_el else "Unbekannt",
             "address": address_el.get_text(strip=True) if address_el else "",
@@ -91,4 +100,13 @@ def fetch_offers():
     offers.sort(key=lambda o: (o["retailer"], o["price"]))
     upcoming.sort(key=lambda pair: pair[0])
     next_offer = upcoming[0][1] if upcoming else None
-    return offers, week_start, week_end, next_offer
+    return offers, next_offer
+
+
+def fetch_all(products=PRODUCTS, city=CITY, today=None):
+    today = today or datetime.date.today()
+    tabs = []
+    for p in products:
+        offers, next_offer = fetch_offers(p["slug"], city, today)
+        tabs.append({**p, "offers": offers, "next_offer": next_offer})
+    return tabs, week_range(today)

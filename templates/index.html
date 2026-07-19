@@ -1,83 +1,285 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Monster Energy Angebote - Leipzig</title>
-  <style>
-    :root { color-scheme: light dark; }
-    body {
-      font-family: -apple-system, Segoe UI, Roboto, sans-serif;
-      max-width: 700px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      background: #fafafa;
-      color: #1a1a1a;
-    }
-    @media (prefers-color-scheme: dark) {
-      body { background: #16181c; color: #e6e6e6; }
-      .card { background: #22252b !important; border-color: #333 !important; }
-      .muted { color: #999 !important; }
-    }
-    h1 { font-size: 1.4rem; margin-bottom: 0.1rem; }
-    .subtitle { color: #666; margin-bottom: 1.5rem; }
-    .muted { color: #777; font-size: 0.85rem; }
-    .card {
-      background: #fff;
-      border: 1px solid #e2e2e2;
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 0.8rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
-    .retailer { font-weight: 600; font-size: 1.05rem; }
-    .address { font-size: 0.85rem; color: #777; }
-    .valid { font-size: 0.85rem; color: #777; }
-    .price {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #1a7a1a;
-      white-space: nowrap;
-    }
-    .empty {
-      padding: 2rem 1rem;
-      text-align: center;
-      color: #777;
-      border: 1px dashed #ccc;
-      border-radius: 10px;
-    }
-    a.refresh { font-size: 0.85rem; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Getränke-Angebote Leipzig</title>
+<style>
+  :root {
+    --bg-0: #06070a;
+    --bg-1: #0d1210;
+    --ink: #eef1ee;
+    --muted: #8b958f;
+    --card: #12161488;
+    --card-border: #ffffff17;
+    --accent-monster: #7CFC3A;
+    --accent-monster-dim: #4c9c22;
+    --accent-spezi: #FF8A2B;
+    --accent-spezi-dim: #b85e17;
+    --accent: var(--accent-monster);
+    --accent-dim: var(--accent-monster-dim);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-1), var(--bg-0) 60%);
+    color: var(--ink);
+    font-family: "Segoe UI", -apple-system, Roboto, sans-serif;
+    min-height: 100%;
+  }
+
+  .app {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.1rem 3rem;
+  }
+
+  /* --- radio-driven tabs, no JS needed --- */
+  .tab-input { position: absolute; opacity: 0; pointer-events: none; }
+
+  /* --- hero --- */
+  .hero {
+    position: relative;
+    padding: 3.2rem 0 1.4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .can-field {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 230px;
+    pointer-events: none;
+    z-index: 0;
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 96%);
+            mask-image: linear-gradient(to bottom, black 55%, transparent 96%);
+  }
+
+  .can {
+    position: absolute;
+    width: 40px;
+    height: 112px;
+    border-radius: 16px / 20px;
+    box-shadow: 0 10px 26px #00000066, inset -5px 0 9px #00000022, inset 5px 0 7px #ffffff55;
+    opacity: .85;
+    animation: drift 10s ease-in-out infinite;
+    filter: blur(.2px);
+  }
+  .can::before {
+    content: "";
+    position: absolute;
+    top: -5px; left: 5px; right: 5px; height: 11px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #f4f4f4, #b7b7b7);
+  }
+  .can::after {
+    content: "";
+    position: absolute;
+    top: 36%; left: 0; right: 0; height: 30%;
+    opacity: .92;
+  }
+
+  .can--white {
+    background: linear-gradient(90deg, #cfcfcf 0%, #fdfdfd 18%, #ffffff 38%, #dddddd 58%, #c3c3c3 80%, #aeaeae 100%);
+  }
+  .can--white::after {
+    background: repeating-linear-gradient(112deg, var(--accent-monster) 0 5px, #0c0c0c 5px 10px);
+  }
+
+  .can--orange {
+    background: linear-gradient(90deg, #ffb06b 0%, #ff9438 30%, #ff7d10 55%, #e8650a 80%, #c9530a 100%);
+  }
+  .can--orange::after {
+    background: repeating-radial-gradient(circle at 30% 35%, #fff5 0 3px, transparent 4px 11px);
+  }
+
+  .can:nth-of-type(1){ left: 3%;  top: 18%;  transform: rotate(-8deg);  animation-duration: 9s; }
+  .can:nth-of-type(2){ left: 16%; top: 50%;  width: 32px; height: 90px; animation-duration: 12s; animation-delay: -3s; }
+  .can:nth-of-type(3){ left: 30%; top: 10%;  width: 46px; height: 128px; animation-duration: 8.5s; animation-delay: -1s; }
+  .can:nth-of-type(4){ right: 28%; top: 42%; width: 30px; height: 84px; animation-duration: 11s; animation-delay: -5s; }
+  .can:nth-of-type(5){ right: 12%; top: 16%; animation-duration: 10.5s; animation-delay: -2s; }
+  .can:nth-of-type(6){ right: 2%;  top: 50%; width: 40px; height: 112px; animation-duration: 9.5s; animation-delay: -6s; }
+
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50%      { transform: translateY(-24px) rotate(5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .can { animation: none; }
+  }
+
+  .hero h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: clamp(1.7rem, 5vw, 2.5rem);
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 24px #00000099;
+  }
+  .hero h1 .accent {
+    color: var(--accent);
+    text-shadow: 0 0 22px var(--accent-dim);
+  }
+  .subtitle {
+    position: relative;
+    z-index: 1;
+    color: var(--muted);
+    margin: .5rem 0 1.6rem;
+    font-size: .92rem;
+  }
+
+  /* --- tab bar --- */
+  .tab-bar {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    gap: .3rem;
+    padding: .3rem;
+    background: #ffffff0d;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+  }
+  .tab-btn {
+    cursor: pointer;
+    padding: .55rem 1.15rem;
+    border-radius: 999px;
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color .2s ease, background .25s ease, box-shadow .25s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  /* --- panels: shown only when their tab radio is checked --- */
+  .panel { display: none; padding-top: 1.6rem; }
+
+  .cards { display: flex; flex-direction: column; gap: .7rem; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-dim);
+    box-shadow: 0 10px 30px -14px var(--accent-dim);
+  }
+  .retailer { font-weight: 700; font-size: 1.06rem; }
+  .address, .valid { font-size: .82rem; color: var(--muted); margin-top: .15rem; }
+  .price {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    white-space: nowrap;
+    text-shadow: 0 0 18px var(--accent-dim);
+  }
+
+  .empty {
+    padding: 2.4rem 1.4rem;
+    text-align: center;
+    color: var(--muted);
+    border: 1px dashed var(--card-border);
+    border-radius: 14px;
+    line-height: 1.6;
+  }
+  .empty strong { color: var(--ink); }
+
+  footer {
+    margin-top: 2.4rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: .78rem;
+  }
+
+  /* --- tab wiring (pure CSS, no JS) --- */
+  {% for t in tabs %}
+  #tab-{{ t.id }}:checked ~ .hero .tab-btn--{{ t.id }} {
+    color: #06070a;
+    background: var(--accent-{{ t.id }});
+    box-shadow: 0 0 20px var(--accent-{{ t.id }}-dim);
+  }
+  #tab-{{ t.id }}:checked ~ main #panel-{{ t.id }} { display: block; }
+  {% endfor %}
+
+  .app:has(#tab-spezi:checked) {
+    --accent: var(--accent-spezi);
+    --accent-dim: var(--accent-spezi-dim);
+  }
+</style>
 </head>
 <body>
-  <h1>Monster Energy Angebote &ndash; Leipzig</h1>
-  <div class="subtitle">Woche vom {{ week_start }} bis {{ week_end }} &middot; nur reguläre Rabatte, keine App-Angebote</div>
+<div class="app">
 
-  {% if offers %}
-    {% for o in offers %}
-    <div class="card">
-      <div>
-        <div class="retailer">{{ o.retailer }}</div>
-        <div class="address">{{ o.address }}</div>
-        <div class="valid">gültig {{ o.valid_from }} &ndash; {{ o.valid_to }}</div>
-      </div>
-      <div class="price">{{ o.price }}</div>
+  {% for t in tabs %}
+  <input type="radio" name="tabs" id="tab-{{ t.id }}" class="tab-input" {% if loop.first %}checked{% endif %} />
+  {% endfor %}
+
+  <header class="hero">
+    <div class="can-field" aria-hidden="true">
+      <span class="can can--white"></span>
+      <span class="can can--orange"></span>
+      <span class="can can--white"></span>
+      <span class="can can--white"></span>
+      <span class="can can--orange"></span>
+      <span class="can can--white"></span>
     </div>
-    {% endfor %}
-  {% else %}
-    <div class="empty">
-      Diese Woche kein regulärer Monster-Energy-Rabatt in Leipzig gefunden.
-      {% if next_offer %}
-        <br /><br />
-        Nächstes bekanntes Angebot: <strong>{{ next_offer.retailer }}</strong>,
-        {{ next_offer.price }}, gültig {{ next_offer.valid_from }}&ndash;{{ next_offer.valid_to }}
+
+    <h1>Getränke-Angebote <span class="accent">Leipzig</span></h1>
+    <p class="subtitle">Woche vom {{ week_start }} bis {{ week_end }} &middot; nur reguläre Rabatte, keine App-Angebote</p>
+
+    <div class="tab-bar" role="tablist">
+      {% for t in tabs %}
+      <label for="tab-{{ t.id }}" class="tab-btn tab-btn--{{ t.id }}">
+        {% if t.id == "spezi" %}🥤{% else %}⚡{% endif %} {{ t.label }}
+      </label>
+      {% endfor %}
+    </div>
+  </header>
+
+  <main>
+    {% for t in tabs %}
+    <section class="panel" id="panel-{{ t.id }}">
+      {% if t.offers %}
+        <div class="cards">
+          {% for o in t.offers %}
+          <div class="card">
+            <div>
+              <div class="retailer">{{ o.retailer }}</div>
+              <div class="address">{{ o.address }}</div>
+              <div class="valid">gültig {{ o.valid_from }} &ndash; {{ o.valid_to }}</div>
+            </div>
+            <div class="price">{{ o.price }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">
+          Diese Woche kein regulärer {{ t.label }}-Rabatt in Leipzig gefunden.
+          {% if t.next_offer %}
+            <br /><br />
+            Nächstes bekanntes Angebot: <strong>{{ t.next_offer.retailer }}</strong>,
+            {{ t.next_offer.price }}, gültig {{ t.next_offer.valid_from }}&ndash;{{ t.next_offer.valid_to }}
+          {% endif %}
+        </div>
       {% endif %}
-    </div>
-  {% endif %}
+    </section>
+    {% endfor %}
+  </main>
 
-  <p class="muted">Quelle: marktguru.de &middot; zuletzt aktualisiert {{ updated }} (t&auml;glich automatisch)</p>
+  <footer>Quelle: marktguru.de &middot; zuletzt aktualisiert {{ updated }} (täglich automatisch)</footer>
+</div>
 </body>
 </html>
