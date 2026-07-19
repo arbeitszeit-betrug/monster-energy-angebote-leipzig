@@ -154,14 +154,14 @@
   .fl:nth-of-type(19){ right: 8%;  top: 79%; width: 42px; height: 146px; font-size: 8px; animation-duration: 10.5s; animation-delay: -8s; }
 
   /* slots 20-27: red bull slim cans */
-  .fl:nth-of-type(20){ left: 2%;   top: 6%;  width: 38px; height: 148px; font-size: 8px; animation-duration: 9s; }
-  .fl:nth-of-type(21){ left: 5%;   top: 34%; width: 32px; height: 126px; font-size: 7px; animation-duration: 12s;   animation-delay: -3s; }
-  .fl:nth-of-type(22){ left: 4%;   top: 72%; width: 40px; height: 156px; font-size: 8px; animation-duration: 10s;   animation-delay: -7s; }
-  .fl:nth-of-type(23){ right: 3%;  top: 7%;  width: 38px; height: 148px; font-size: 8px; animation-duration: 8.5s;  animation-delay: -1s; }
-  .fl:nth-of-type(24){ right: 6%;  top: 36%; width: 32px; height: 126px; font-size: 7px; animation-duration: 11s;   animation-delay: -5s; }
-  .fl:nth-of-type(25){ right: 3%;  top: 73%; width: 40px; height: 156px; font-size: 8px; animation-duration: 9.5s;  animation-delay: -6s; }
-  .fl:nth-of-type(26){ left: 13%;  top: 13%; width: 28px; height: 112px; font-size: 6px; animation-duration: 10.5s; animation-delay: -2s; }
-  .fl:nth-of-type(27){ right: 12%; top: 14%; width: 28px; height: 112px; font-size: 6px; animation-duration: 11.5s; animation-delay: -4s; }
+  .fl:nth-of-type(20){ left: 2%;   top: 6%;  width: 42px; height: 132px; font-size: 8px; animation-duration: 9s; }
+  .fl:nth-of-type(21){ left: 5%;   top: 34%; width: 36px; height: 114px; font-size: 7px; animation-duration: 12s;   animation-delay: -3s; }
+  .fl:nth-of-type(22){ left: 4%;   top: 72%; width: 44px; height: 140px; font-size: 8px; animation-duration: 10s;   animation-delay: -7s; }
+  .fl:nth-of-type(23){ right: 3%;  top: 7%;  width: 42px; height: 132px; font-size: 8px; animation-duration: 8.5s;  animation-delay: -1s; }
+  .fl:nth-of-type(24){ right: 6%;  top: 36%; width: 36px; height: 114px; font-size: 7px; animation-duration: 11s;   animation-delay: -5s; }
+  .fl:nth-of-type(25){ right: 3%;  top: 73%; width: 44px; height: 140px; font-size: 8px; animation-duration: 9.5s;  animation-delay: -6s; }
+  .fl:nth-of-type(26){ left: 13%;  top: 13%; width: 32px; height: 102px; font-size: 6.5px; animation-duration: 10.5s; animation-delay: -2s; }
+  .fl:nth-of-type(27){ right: 12%; top: 14%; width: 32px; height: 102px; font-size: 6.5px; animation-duration: 11.5s; animation-delay: -4s; }
 
   /* on phones hide only the mid-height items that would sit behind the cards */
   @media (max-width: 900px) {
@@ -871,6 +871,13 @@
 
   .retailer { font-weight: 700; font-size: 1.06rem; }
   .address, .valid { font-size: .82rem; color: var(--muted); margin-top: .15rem; }
+  .offer-info {
+    font-size: .74rem;
+    color: var(--muted);
+    margin-top: .3rem;
+    max-width: 46ch;
+    line-height: 1.45;
+  }
 
   .chip {
     display: inline-block;
@@ -1094,6 +1101,7 @@
               <div class="retailer">{{ o.retailer }}</div>
               <div class="address">{{ o.address }}</div>
               <div class="valid">gültig {{ o.valid_from }} &ndash; {{ o.valid_to }}</div>
+              {% if o.info %}<div class="offer-info">{{ o.info }}</div>{% endif %}
               {% if o.days_left == 0 %}
               <span class="chip">endet heute!</span>
               {% elif o.days_left == 1 %}
