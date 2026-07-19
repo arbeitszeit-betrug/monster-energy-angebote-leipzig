@@ -58,6 +58,15 @@
             mask-image: linear-gradient(to bottom, black 55%, transparent 96%);
   }
 
+  /* darkens the area right behind the headline so it stays readable over the cans */
+  .text-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(480px 200px at 50% 42%, rgba(6,7,10,.88), rgba(6,7,10,.5) 55%, transparent 78%);
+  }
+
   .can {
     position: absolute;
     width: 46px;
@@ -168,7 +177,7 @@
     margin: 0;
     font-size: clamp(1.7rem, 5vw, 2.5rem);
     letter-spacing: -0.02em;
-    text-shadow: 0 0 24px #00000099;
+    text-shadow: 0 2px 5px rgba(0,0,0,.95), 0 0 26px rgba(0,0,0,.9);
   }
   .hero h1 .accent {
     color: var(--accent);
@@ -345,6 +354,7 @@
       </span>
       
     </div>
+    <div class="text-scrim"></div>
 
     <h1>Getränke-Angebote <span class="accent">Leipzig</span></h1>
     <p class="subtitle">Woche vom 13.07.2026 bis 19.07.2026 &middot; nur reguläre Rabatte, keine App-Angebote</p>
@@ -388,7 +398,7 @@
     
   </main>
 
-  <footer>Quelle: marktguru.de &middot; zuletzt aktualisiert 19.07.2026 22:31 (täglich automatisch)</footer>
+  <footer>Quelle: marktguru.de &middot; zuletzt aktualisiert 19.07.2026 22:34 (täglich automatisch)</footer>
 </div>
 </body>
 </html>
