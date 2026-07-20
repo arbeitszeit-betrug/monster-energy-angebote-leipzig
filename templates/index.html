@@ -111,13 +111,15 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
   }
 
-  /* ===== floating drinks, in front of the content and draggable ===== */
+  /* ===== floating drinks: most in the background, the bottom two per tab
+     live in a front layer and can be dragged around ===== */
   .drink-layer {
     position: fixed;
     inset: 0;
-    z-index: 5;
+    z-index: 0;
     pointer-events: none;
   }
+  .drink-layer--front { z-index: 6; }
 
   .fl {
     position: absolute;
@@ -125,56 +127,55 @@
     animation: drift 10s ease-in-out infinite;
     filter: drop-shadow(0 16px 20px rgba(0,0,0,.55));
     pointer-events: auto;
-    cursor: grab;
+    cursor: pointer;
     user-select: none;
     touch-action: none;
     -webkit-tap-highlight-color: transparent;
   }
+  .fl.front { cursor: grab; }
   .fl.dragging {
     cursor: grabbing;
     animation-play-state: paused;
   }
 
-  /* slots 1-10: monster cans */
-  .fl:nth-of-type(1) { left: 2%;   top: 5%;  width: 46px; height: 132px; animation-duration: 9s; }
-  .fl:nth-of-type(2) { left: 6%;   top: 30%; width: 40px; height: 114px; font-size: 8px;  animation-duration: 12s;   animation-delay: -3s; }
-  .fl:nth-of-type(3) { left: 3%;   top: 55%; width: 50px; height: 142px; font-size: 10px; animation-duration: 10s;   animation-delay: -7s; }
-  .fl:nth-of-type(4) { left: 8%;   top: 79%; width: 38px; height: 108px; font-size: 8px;  animation-duration: 11.5s; animation-delay: -9s; }
-  .fl:nth-of-type(5) { right: 3%;  top: 6%;  width: 48px; height: 138px; font-size: 10px; animation-duration: 8.5s;  animation-delay: -1s; }
-  .fl:nth-of-type(6) { right: 7%;  top: 28%; width: 36px; height: 102px; font-size: 7px;  animation-duration: 11s;   animation-delay: -5s; }
-  .fl:nth-of-type(7) { right: 2%;  top: 52%; width: 46px; height: 132px; animation-duration: 9.5s;  animation-delay: -6s; }
-  .fl:nth-of-type(8) { right: 8%;  top: 77%; width: 42px; height: 120px; font-size: 8px;  animation-duration: 10.5s; animation-delay: -8s; }
-  .fl:nth-of-type(9) { left: 13%;  top: 13%; width: 36px; height: 102px; font-size: 7px;  animation-duration: 10.5s; animation-delay: -2s; }
-  .fl:nth-of-type(10){ right: 12%; top: 14%; width: 34px; height: 96px;  font-size: 7px;  animation-duration: 11.5s; animation-delay: -4s; }
+  /* slots 1-10: monster cans (s4 + s8 are the draggable front pair) */
+  .fl.s1 { left: 2%;   top: 5%;  width: 46px; height: 132px; animation-duration: 9s; }
+  .fl.s2 { left: 6%;   top: 30%; width: 40px; height: 114px; font-size: 8px;  animation-duration: 12s;   animation-delay: -3s; }
+  .fl.s3 { left: 3%;   top: 55%; width: 50px; height: 142px; font-size: 10px; animation-duration: 10s;   animation-delay: -7s; }
+  .fl.s4 { left: 8%;   top: 79%; width: 42px; height: 120px; font-size: 8px;  animation-duration: 11.5s; animation-delay: -9s; }
+  .fl.s5 { right: 3%;  top: 6%;  width: 48px; height: 138px; font-size: 10px; animation-duration: 8.5s;  animation-delay: -1s; }
+  .fl.s6 { right: 7%;  top: 28%; width: 36px; height: 102px; font-size: 7px;  animation-duration: 11s;   animation-delay: -5s; }
+  .fl.s7 { right: 2%;  top: 52%; width: 46px; height: 132px; animation-duration: 9.5s;  animation-delay: -6s; }
+  .fl.s8 { right: 8%;  top: 77%; width: 42px; height: 120px; font-size: 8px;  animation-duration: 10.5s; animation-delay: -8s; }
+  .fl.s9 { left: 13%;  top: 13%; width: 36px; height: 102px; font-size: 7px;  animation-duration: 10.5s; animation-delay: -2s; }
+  .fl.s10{ right: 12%; top: 14%; width: 34px; height: 96px;  font-size: 7px;  animation-duration: 11.5s; animation-delay: -4s; }
 
-  /* slots 11-18: spezi bottles */
-  .fl:nth-of-type(11){ left: 2%;   top: 5%;  width: 44px; height: 150px; animation-duration: 9s; }
-  .fl:nth-of-type(12){ left: 6%;   top: 31%; width: 38px; height: 132px; font-size: 8px; animation-duration: 12s;   animation-delay: -3s; }
-  .fl:nth-of-type(13){ left: 3%;   top: 57%; width: 46px; height: 158px; animation-duration: 10s;   animation-delay: -7s; }
-  .fl:nth-of-type(14){ left: 9%;   top: 81%; width: 36px; height: 124px; font-size: 7px; animation-duration: 11.5s; animation-delay: -9s; }
-  .fl:nth-of-type(15){ right: 3%;  top: 6%;  width: 44px; height: 150px; animation-duration: 8.5s;  animation-delay: -1s; }
-  .fl:nth-of-type(16){ right: 7%;  top: 30%; width: 36px; height: 126px; font-size: 8px; animation-duration: 11s;   animation-delay: -5s; }
-  .fl:nth-of-type(17){ right: 2%;  top: 55%; width: 46px; height: 158px; animation-duration: 9.5s;  animation-delay: -6s; }
-  .fl:nth-of-type(18){ right: 11%; top: 14%; width: 34px; height: 116px; font-size: 7px; animation-duration: 11.5s; animation-delay: -4s; }
-  .fl:nth-of-type(19){ right: 8%;  top: 79%; width: 42px; height: 146px; font-size: 8px; animation-duration: 10.5s; animation-delay: -8s; }
+  /* slots 11-19: spezi bottles (s14 + s19 front) */
+  .fl.s11{ left: 2%;   top: 5%;  width: 44px; height: 150px; animation-duration: 9s; }
+  .fl.s12{ left: 6%;   top: 31%; width: 38px; height: 132px; font-size: 8px; animation-duration: 12s;   animation-delay: -3s; }
+  .fl.s13{ left: 3%;   top: 57%; width: 46px; height: 158px; animation-duration: 10s;   animation-delay: -7s; }
+  .fl.s14{ left: 9%;   top: 81%; width: 40px; height: 138px; font-size: 8px; animation-duration: 11.5s; animation-delay: -9s; }
+  .fl.s15{ right: 3%;  top: 6%;  width: 44px; height: 150px; animation-duration: 8.5s;  animation-delay: -1s; }
+  .fl.s16{ right: 7%;  top: 30%; width: 36px; height: 126px; font-size: 8px; animation-duration: 11s;   animation-delay: -5s; }
+  .fl.s17{ right: 2%;  top: 55%; width: 46px; height: 158px; animation-duration: 9.5s;  animation-delay: -6s; }
+  .fl.s18{ right: 11%; top: 14%; width: 34px; height: 116px; font-size: 7px; animation-duration: 11.5s; animation-delay: -4s; }
+  .fl.s19{ right: 8%;  top: 79%; width: 42px; height: 146px; font-size: 8px; animation-duration: 10.5s; animation-delay: -8s; }
 
-  /* slots 20-27: red bull slim cans */
-  .fl:nth-of-type(20){ left: 2%;   top: 6%;  width: 42px; height: 132px; font-size: 8px; animation-duration: 9s; }
-  .fl:nth-of-type(21){ left: 5%;   top: 34%; width: 36px; height: 114px; font-size: 7px; animation-duration: 12s;   animation-delay: -3s; }
-  .fl:nth-of-type(22){ left: 4%;   top: 72%; width: 44px; height: 140px; font-size: 8px; animation-duration: 10s;   animation-delay: -7s; }
-  .fl:nth-of-type(23){ right: 3%;  top: 7%;  width: 42px; height: 132px; font-size: 8px; animation-duration: 8.5s;  animation-delay: -1s; }
-  .fl:nth-of-type(24){ right: 6%;  top: 36%; width: 36px; height: 114px; font-size: 7px; animation-duration: 11s;   animation-delay: -5s; }
-  .fl:nth-of-type(25){ right: 3%;  top: 73%; width: 44px; height: 140px; font-size: 8px; animation-duration: 9.5s;  animation-delay: -6s; }
-  .fl:nth-of-type(26){ left: 13%;  top: 13%; width: 32px; height: 102px; font-size: 6.5px; animation-duration: 10.5s; animation-delay: -2s; }
-  .fl:nth-of-type(27){ right: 12%; top: 14%; width: 32px; height: 102px; font-size: 6.5px; animation-duration: 11.5s; animation-delay: -4s; }
+  /* slots 20-27: red bull slim cans (s22 + s25 front) */
+  .fl.s20{ left: 2%;   top: 6%;  width: 42px; height: 132px; font-size: 8px; animation-duration: 9s; }
+  .fl.s21{ left: 5%;   top: 34%; width: 36px; height: 114px; font-size: 7px; animation-duration: 12s;   animation-delay: -3s; }
+  .fl.s22{ left: 4%;   top: 72%; width: 44px; height: 140px; font-size: 8px; animation-duration: 10s;   animation-delay: -7s; }
+  .fl.s23{ right: 3%;  top: 7%;  width: 42px; height: 132px; font-size: 8px; animation-duration: 8.5s;  animation-delay: -1s; }
+  .fl.s24{ right: 6%;  top: 36%; width: 36px; height: 114px; font-size: 7px; animation-duration: 11s;   animation-delay: -5s; }
+  .fl.s25{ right: 3%;  top: 73%; width: 44px; height: 140px; font-size: 8px; animation-duration: 9.5s;  animation-delay: -6s; }
+  .fl.s26{ left: 13%;  top: 13%; width: 32px; height: 102px; font-size: 6.5px; animation-duration: 10.5s; animation-delay: -2s; }
+  .fl.s27{ right: 12%; top: 14%; width: 32px; height: 102px; font-size: 6.5px; animation-duration: 11.5s; animation-delay: -4s; }
 
-  /* on phones hide only the mid-height items that would sit behind the cards */
+  /* phones: keep it airy - only the two top corners and the two draggable ones */
   @media (max-width: 900px) {
-    .fl:nth-of-type(2), .fl:nth-of-type(3),
-    .fl:nth-of-type(6), .fl:nth-of-type(7),
-    .fl:nth-of-type(12), .fl:nth-of-type(13),
-    .fl:nth-of-type(16), .fl:nth-of-type(17),
-    .fl:nth-of-type(21), .fl:nth-of-type(24) { display: none; }
+    .fl.s2, .fl.s3, .fl.s6, .fl.s7, .fl.s9, .fl.s10,
+    .fl.s12, .fl.s13, .fl.s16, .fl.s17, .fl.s18,
+    .fl.s21, .fl.s24, .fl.s26, .fl.s27 { display: none; }
   }
 
   /* only the drinks of the active tab are visible */
@@ -1008,6 +1009,63 @@
 </style>
 </head>
 <body>
+
+{% macro monster_can(kind, slot, front) %}
+<span class="fl can g-monster s{{ slot }} can--{{ kind }}{{ ' front' if front else '' }}" title="Psst … klick mich öfter">
+  <span class="can-body">
+    <span class="can-texture"></span>
+    <span class="can-filigree"></span>
+    <span class="can-taper"></span>
+    <span class="can-rim"></span>
+    <span class="can-shine"></span>
+    <span class="can-shine2"></span>
+    <span class="can-top">ZERO ZUCKER</span>
+    <span class="can-claw"><span></span><span></span><span></span></span>
+    <span class="can-word">MONSTER</span>
+    <span class="can-energy">ENERGY</span>
+    <span class="can-sub">{% if kind == "fiesta" %}ULTRA FIESTA<br />MANGO{% elif kind == "gold" %}ULTRA GOLDEN<br />PINEAPPLE{% else %}ULTRA{% endif %}</span>
+    <span class="can-drops"></span>
+  </span>
+</span>
+{% endmacro %}
+
+{% macro spezi_bottle(slot, front) %}
+<span class="fl bottle g-spezi s{{ slot }}{{ ' front' if front else '' }}" title="Erst schütteln …">
+  <span class="b-inner">
+    <span class="b-cap"></span>
+    <span class="b-glass">
+      <span class="liquid"></span>
+      <span class="b-shine"></span>
+      <span class="b-shine2"></span>
+      <span class="b-neckband">PAULANER</span>
+      <span class="b-label"><i>PAULANER</i><b>Spezi</b></span>
+      <span class="can-drops"></span>
+    </span>
+  </span>
+</span>
+{% endmacro %}
+
+{% macro redbull_can(slot, front) %}
+<span class="fl can g-redbull s{{ slot }} can--redbull{{ ' front' if front else '' }}" title="Psst … klick mich öfter">
+  <span class="can-body">
+    <span class="can-texture"></span>
+    <span class="can-taper"></span>
+    <span class="can-rim"></span>
+    <span class="can-shine"></span>
+    <span class="can-shine2"></span>
+    <span class="rb-word">Red Bull</span>
+    <span class="rb-sun"></span>
+    <span class="rb-bull rb-bull--l"></span>
+    <span class="rb-bull rb-bull--r"></span>
+    <span class="rb-ed">ENERGY DRINK</span>
+    <span class="can-drops"></span>
+  </span>
+</span>
+{% endmacro %}
+
+{% set monster_kinds = ["ultra", "fiesta", "gold", "ultra", "gold", "fiesta", "ultra", "gold", "fiesta", "ultra"] %}
+{% set front_slots = [4, 8, 14, 19, 22, 25] %}
+
 <div class="app">
 
   {% for t in tabs %}
@@ -1021,57 +1079,18 @@
   </div>
   <div class="noise" aria-hidden="true"></div>
 
+  <!-- calm background layer: sits behind the page content -->
   <div class="drink-layer" aria-hidden="true">
-    {% for kind in ["ultra", "fiesta", "gold", "ultra", "gold", "fiesta", "ultra", "gold", "fiesta", "ultra"] %}
-    <span class="fl can g-monster can--{{ kind }}" title="Psst … klick mich öfter">
-      <span class="can-body">
-        <span class="can-texture"></span>
-        <span class="can-filigree"></span>
-        <span class="can-taper"></span>
-        <span class="can-rim"></span>
-        <span class="can-shine"></span>
-        <span class="can-shine2"></span>
-        <span class="can-top">ZERO ZUCKER</span>
-        <span class="can-claw"><span></span><span></span><span></span></span>
-        <span class="can-word">MONSTER</span>
-        <span class="can-energy">ENERGY</span>
-        <span class="can-sub">{% if kind == "fiesta" %}ULTRA FIESTA<br />MANGO{% elif kind == "gold" %}ULTRA GOLDEN<br />PINEAPPLE{% else %}ULTRA{% endif %}</span>
-        <span class="can-drops"></span>
-      </span>
-    </span>
-    {% endfor %}
-    {% for _ in range(9) %}
-    <span class="fl bottle g-spezi" title="Erst schütteln …">
-      <span class="b-inner">
-        <span class="b-cap"></span>
-        <span class="b-glass">
-          <span class="liquid"></span>
-          <span class="b-shine"></span>
-          <span class="b-shine2"></span>
-          <span class="b-neckband">PAULANER</span>
-          <span class="b-label"><i>PAULANER</i><b>Spezi</b></span>
-          <span class="can-drops"></span>
-        </span>
-      </span>
-    </span>
-    {% endfor %}
-    {% for _ in range(8) %}
-    <span class="fl can g-redbull can--redbull" title="Psst … klick mich öfter">
-      <span class="can-body">
-        <span class="can-texture"></span>
-        <span class="can-taper"></span>
-        <span class="can-rim"></span>
-        <span class="can-shine"></span>
-        <span class="can-shine2"></span>
-        <span class="rb-word">Red Bull</span>
-        <span class="rb-sun"></span>
-        <span class="rb-bull rb-bull--l"></span>
-        <span class="rb-bull rb-bull--r"></span>
-        <span class="rb-ed">ENERGY DRINK</span>
-        <span class="can-drops"></span>
-      </span>
-    </span>
-    {% endfor %}
+    {% for kind in monster_kinds %}{% if loop.index not in front_slots %}{{ monster_can(kind, loop.index, false) }}{% endif %}{% endfor %}
+    {% for _ in range(9) %}{% set slot = loop.index + 10 %}{% if slot not in front_slots %}{{ spezi_bottle(slot, false) }}{% endif %}{% endfor %}
+    {% for _ in range(8) %}{% set slot = loop.index + 19 %}{% if slot not in front_slots %}{{ redbull_can(slot, false) }}{% endif %}{% endfor %}
+  </div>
+
+  <!-- front layer: the two drinks per tab you can actually grab and drag -->
+  <div class="drink-layer drink-layer--front" aria-hidden="true">
+    {% for kind in monster_kinds %}{% if loop.index in front_slots %}{{ monster_can(kind, loop.index, true) }}{% endif %}{% endfor %}
+    {% for _ in range(9) %}{% set slot = loop.index + 10 %}{% if slot in front_slots %}{{ spezi_bottle(slot, true) }}{% endif %}{% endfor %}
+    {% for _ in range(8) %}{% set slot = loop.index + 19 %}{% if slot in front_slots %}{{ redbull_can(slot, true) }}{% endif %}{% endfor %}
   </div>
 
   <header class="hero">
@@ -1090,7 +1109,7 @@
 
     <div class="week-progress"><i></i></div>
     <div class="week-label">Angebotswoche zu {{ week_pct }}% vorbei</div>
-    <div class="easter-hint">Tipp: Dosen und Flaschen vertragen mehrere Klicks nur bedingt &hellip;</div>
+    <div class="easter-hint">Tipp: die beiden Getränke unten lassen sich verschieben &ndash; und vertragen mehrere Klicks nur bedingt &hellip;</div>
   </header>
 
   <main>
@@ -1295,6 +1314,7 @@
   /* drag to move; a short tap (under 8px movement) still triggers the toy action */
   function draggable(el, onTap) {
     el.addEventListener("pointerdown", function (e) {
+      e.preventDefault();
       var pid = e.pointerId;
       var sx = e.clientX, sy = e.clientY;
       var bx = parseFloat(el.dataset.tx || 0), by = parseFloat(el.dataset.ty || 0);
