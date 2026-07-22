@@ -1,8 +1,19 @@
 import datetime
 import re
+from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
+
+# Der GitHub-Actions-Runner laeuft in UTC. Damit "heute" immer der deutsche
+# Kalendertag ist (nicht z.B. schon UTC-Tag+1 waehrend Sommerzeit-Naechten),
+# wird das Datum konsequent in der Berliner Zeitzone bestimmt.
+TZ = ZoneInfo("Europe/Berlin")
+
+
+def today_berlin():
+    return datetime.datetime.now(TZ).date()
+
 
 BASE_URL = "https://www.marktguru.de/bl/{slug}/{city}"
 HEADERS = {
@@ -56,7 +67,7 @@ def week_range(today):
 
 
 def fetch_offers(slug, city=CITY, today=None):
-    today = today or datetime.date.today()
+    today = today or today_berlin()
     week_start, week_end = week_range(today)
 
     url = BASE_URL.format(slug=slug, city=city)
@@ -117,12 +128,12 @@ def fetch_offers(slug, city=CITY, today=None):
 
 
 def week_progress(today=None):
-    today = today or datetime.date.today()
+    today = today or today_berlin()
     return round((today.weekday() + 1) / 7 * 100)
 
 
 def fetch_all(products=PRODUCTS, city=CITY, today=None):
-    today = today or datetime.date.today()
+    today = today or today_berlin()
     tabs = []
     for p in products:
         offers, next_offer = fetch_offers(p["slug"], city, today)

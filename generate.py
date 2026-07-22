@@ -5,7 +5,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-from scraper import fetch_all, week_progress
+from scraper import TZ, fetch_all, today_berlin, week_progress
 
 BASE_DIR = Path(__file__).parent
 OUT_DIR = BASE_DIR / "docs"
@@ -22,7 +22,7 @@ def build_history(tabs, persist=True):
     if HIST_FILE.exists():
         data = json.loads(HIST_FILE.read_text(encoding="utf-8"))
 
-    week = datetime.date.today().strftime("%G-W%V")
+    week = today_berlin().strftime("%G-W%V")
     for t in tabs:
         arr = data.setdefault(t["id"], [])
         for e in arr:
@@ -67,7 +67,7 @@ def main():
         week_start=week_start.strftime("%d.%m.%Y"),
         week_end=week_end.strftime("%d.%m.%Y"),
         week_pct=week_progress(),
-        updated=datetime.datetime.now().strftime("%d.%m.%Y %H:%M"),
+        updated=datetime.datetime.now(TZ).strftime("%d.%m.%Y %H:%M"),
     )
 
     OUT_DIR.mkdir(exist_ok=True)
