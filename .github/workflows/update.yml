@@ -2,7 +2,7 @@ name: Update Monster Energy Angebote
 
 on:
   schedule:
-    - cron: "0 5 * * *"  # taeglich 05:00 UTC (~07:00 Sommerzeit)
+    - cron: "0 */3 * * *"  # alle 3 Stunden, damit neue Angebote schneller auftauchen
   workflow_dispatch: {}
 
 permissions:

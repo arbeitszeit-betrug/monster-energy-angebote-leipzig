@@ -31,7 +31,7 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-1), var(--bg-0) 60%);
+    background: var(--bg-0);
     color: var(--ink);
     font-family: "Segoe UI", -apple-system, Roboto, sans-serif;
     min-height: 100%;
@@ -57,7 +57,13 @@
   .tab-input { position: absolute; opacity: 0; pointer-events: none; }
 
   /* ===== ambient background: aurora blobs + rising bubbles + grain ===== */
-  .bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  /* fixed + inset:0 pins this to the viewport (not the document), so the
+     ambient glow stays visible everywhere, no matter how far the page
+     scrolls or how tall it gets on mobile with many cards. */
+  .bg {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-1), var(--bg-0) 60%);
+  }
 
   .blob {
     position: absolute;
