@@ -31,11 +31,15 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: var(--bg-0);
     color: var(--ink);
     font-family: "Segoe UI", -apple-system, Roboto, sans-serif;
     min-height: 100%;
   }
+  /* html carries the solid end-colour; body MUST stay transparent so the
+     viewport-fixed glow layer (.bg, z-index:-1) shows through. An opaque body
+     background would paint over that layer and the page would look flat black. */
+  html { background: var(--bg-0); }
+  body { background: transparent; }
 
   ::-webkit-scrollbar { width: 10px; }
   ::-webkit-scrollbar-track { background: #0a0c0f; }
@@ -57,12 +61,14 @@
   .tab-input { position: absolute; opacity: 0; pointer-events: none; }
 
   /* ===== ambient background: aurora blobs + rising bubbles + grain ===== */
-  /* fixed + inset:0 pins this to the viewport (not the document), so the
-     ambient glow stays visible everywhere, no matter how far the page
-     scrolls or how tall it gets on mobile with many cards. */
+  /* position:fixed + inset:0 keeps this exactly viewport-sized and pinned, so
+     the glow stays put no matter how far or how long the page scrolls (mobile
+     included). No fixed px radius / colour stop: the gradient fades smoothly to
+     the farthest corner, so there is no point where it snaps to a flat colour
+     and reads as a hard horizontal "wall". */
   .bg {
     position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-    background: radial-gradient(1200px 600px at 50% -10%, var(--bg-1), var(--bg-0) 60%);
+    background: radial-gradient(ellipse farthest-corner at 50% -10%, var(--bg-1), var(--bg-0));
   }
 
   .blob {
