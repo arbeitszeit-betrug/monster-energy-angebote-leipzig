@@ -26,6 +26,10 @@ PRODUCTS = [
 APP_ONLY_RE = re.compile(r"\bAPP\b", re.IGNORECASE)
 DATE_RE = re.compile(r"(\d{2})\.(\d{2})\.\s*-\s*(\d{2})\.(\d{2})\.")
 PRICE_VAL_RE = re.compile(r"(\d+[.,]\d+)")
+# Erkennt Mehrfachgebinde in der Angebotsbeschreibung, z.B. "6x 0,25 l",
+# "12 x 0,25-l-Dose", "2 x 12er Tray" - solche Angebote gelten fuer ein
+# ganzes Pack, nicht fuer ein einzelnes Getraenk, und werden ausgeschlossen.
+MULTIPACK_RE = re.compile(r"\d+\s*x\s*\d")
 
 
 def _parse_dates(text, today):
@@ -78,6 +82,8 @@ def fetch_offers(slug, city=CITY, today=None):
         info_text = info_el.get_text(" ", strip=True) if info_el else ""
         if APP_ONLY_RE.search(info_text):
             continue  # App-exklusives Angebot ausschliessen
+        if MULTIPACK_RE.search(info_text):
+            continue  # Mehrfachgebinde (6er/12er-Pack etc.) ausschliessen
 
         price_el = li.select_one("dd.price span.price")
         retailer_el = li.select_one("dd.retailer-name a")
