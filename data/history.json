@@ -7,6 +7,10 @@
   {
    "week": "2026-W30",
    "price": 0.89
+  },
+  {
+   "week": "2026-W31",
+   "price": null
   }
  ],
  "spezi": [
@@ -16,6 +20,10 @@
   },
   {
    "week": "2026-W30",
+   "price": null
+  },
+  {
+   "week": "2026-W31",
    "price": null
   }
  ],
@@ -27,6 +35,10 @@
   {
    "week": "2026-W30",
    "price": 5.29
+  },
+  {
+   "week": "2026-W31",
+   "price": null
   }
  ]
 }
