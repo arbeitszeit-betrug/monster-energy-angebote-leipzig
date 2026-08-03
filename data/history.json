@@ -11,6 +11,10 @@
   {
    "week": "2026-W31",
    "price": null
+  },
+  {
+   "week": "2026-W32",
+   "price": null
   }
  ],
  "spezi": [
@@ -25,6 +29,10 @@
   {
    "week": "2026-W31",
    "price": null
+  },
+  {
+   "week": "2026-W32",
+   "price": 0.88
   }
  ],
  "redbull": [
@@ -38,6 +46,10 @@
   },
   {
    "week": "2026-W31",
+   "price": null
+  },
+  {
+   "week": "2026-W32",
    "price": null
   }
  ]
